@@ -27,7 +27,6 @@ async def start_chat(stream: bool = True) -> None:
 
     print("\nChat is ready. Type your message or 'exit' to quit.\n")
 
-    # 4️⃣ Main chat loop
     while True:
         user_input = input("> ").strip()
 
@@ -35,19 +34,15 @@ async def start_chat(stream: bool = True) -> None:
             print("👋 Exiting chat. Goodbye!")
             break
 
-        # Add user message to conversation
         conversation.add_message(Message(Role.USER, user_input))
 
-        # 5️⃣ Get AI response
         print("AI:")
         if stream:
             ai_message = await custom_client.stream_completion(conversation.get_messages())
         else:
             ai_message = custom_client.get_completion(conversation.get_messages())
 
-        # Add AI message to conversation
         conversation.add_message(ai_message)
-
 
 if __name__ == "__main__":
     asyncio.run(start_chat(stream=True))
